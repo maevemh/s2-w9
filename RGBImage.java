@@ -96,6 +96,139 @@ public class RGBImage{
         // Always do this after manipulating pixels.
         refresh();
     }
+    public void flipHorizontal() {
+        // TODO: reverse each row left-to-right
+        int height = red.length;
+        int width = red[0].length;
+
+        int[][] tempR = new int[height][width];
+        int[][] tempB = new int[height][width];
+        int[][] tempG = new int[height][width];
+
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w++) {
+                tempR[h][w] = red[h][width-w-1];
+                tempG[h][w] = green[h][width-w-1];
+                tempB[h][w] = blue[h][width-w-1];
+            }
+        }
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w++) {
+                red[h][w] = tempR[h][w];
+                green[h][w] = tempG[h][w];
+                blue[h][w] = tempB[h][w];
+            }
+        }
+
+        refresh();
+    }
+
+    public void greyScale() {
+        // TODO: set each channel value to the average of red/green/blue
+        int height = red.length;
+        int width = red[0].length;
+        int tot = 0;
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w++) {
+                tot = 0;
+                tot= (red[h][w] +green[h][w]+blue[h][w])/3;
+                red[h][w] = tot;
+                green[h][w] = tot;
+                blue[h][w] = tot;
+            }
+        }
+        refresh();
+    }
+
+    public void mirror() {
+        // TODO: copy the left side of each row onto the right side
+        int height = red.length;
+        int width = red[0].length;
+
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width/2; w++) {
+                red[h][w] = red[h][width-1-w];
+                green[h][w] = green[h][width-1-w];
+                blue[h][w] = blue[h][width-1-w];
+            }
+        }
+        refresh();
+        
+    }
+
+    public void blackAndWhite() {
+        // TODO: set each pixel to 0 or 255 based on average brightness
+        int height = red.length;
+        int width = red[0].length;
+        int tot = 0;
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w++) {
+                tot = 0;
+                tot= (red[h][w] +green[h][w]+blue[h][w])/3;
+                if(tot<127){
+                    red[h][w] = 0;
+                    green[h][w] = 0;
+                    blue[h][w] = 0;
+
+                }else{
+                    red[h][w] = 255;
+                    green[h][w] = 255;
+                    blue[h][w] = 255;
+
+                }
+            }
+        }
+
+        refresh();
+    }
+
+    public void contrastStretch() {
+        // TODO: scale channel values to fill range 0..255
+        int height = red.length;
+        int width = red[0].length;
+        int rmax = 0;
+        int gmax = 0;
+        int bmax = 0;
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w++) {
+                if(red[h][w]>rmax){
+                    rmax=red[h][w];
+                }
+                if(green[h][w]>gmax){
+                    gmax=green[h][w];
+                }
+                if(blue[h][w]>bmax){
+                    bmax=blue[h][w];
+                }
+            }
+        }
+        int rmin = 1000;
+        int gmin = 1000;
+        int bmin = 1000;
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w++) {
+                if(red[h][w]<rmin){
+                    rmin=red[h][w];
+                }
+                if(green[h][w]<gmin){
+                    gmin=green[h][w];
+                }
+                if(blue[h][w]<bmin){
+                    bmin=blue[h][w];
+                }
+            }
+        }
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w++) {
+                red[h][w]= 255*(red[h][w]-rmin)/(rmax-rmin);
+                green[h][w]= 255*(green[h][w]-gmin)/(gmax-gmin);
+                blue[h][w]= 255*(blue[h][w]-bmin)/(bmax-bmin);
+            }
+        }
+
+
+        refresh();
+    }
 
 
 }
