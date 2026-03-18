@@ -18,10 +18,9 @@ public class ArrayRotation{
 
     public void rotate(){
         int[][] temp = new int[nums.length][nums[0].length];
-        int y=0;
-        for(int c=(nums[0].length-1); c>=0; c--){
-            for(int r=0; r<nums.length; r++){
-                temp[r][c]= ++y;
+        for(int c=(nums[0].length-1), x=0; c>=0; c--, x++){
+            for(int r=0, z=0; r<nums.length; r++, z++){
+                temp[r][c]= nums[x][z];
 
             }
         }
@@ -39,6 +38,7 @@ public class ArrayRotation{
     }
     public static void main(String[] args) {
         ArrayRotation a = new ArrayRotation(3);
+        a.rotate();
         a.rotate();
         a.print();
     }
